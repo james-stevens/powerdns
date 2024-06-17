@@ -4,6 +4,7 @@
 
 export PDNS_API_KEY="$(dd if=/dev/urandom bs=1 count=50 2>/dev/null | base64 | tr -d $'\n +=./')"
 if ! test "${PDNS_LOG_LEVEL}"; then export PDNS_LOG_LEVEL=5; fi
+if ! test "${PDNS_LOG_FACILITY}"; then export PDNS_LOG_FACILITY=6; fi
 if ! test "${PDNS_ALSO_NOTIFY}"; then export PDNS_ALSO_NOTIFY=""; fi
 
 for file in /usr/local/etc/*.tmpl
