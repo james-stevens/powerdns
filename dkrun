@@ -1,0 +1,6 @@
+#! /bin/sh
+
+docker run -it --env-file=container.env \
+	-p 127.0.0.1:53:53/udp -p 127.0.0.1:53:53 \
+	-p 192.168.1.145:80:80 \
+	$(cat list) $@

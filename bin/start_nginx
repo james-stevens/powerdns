@@ -1,0 +1,4 @@
+#! /bin/sh
+mkdir /run/nginx
+chown nginx: /run/nginx
+exec /usr/sbin/nginx -g "daemon off;"

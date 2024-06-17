@@ -1,0 +1,8 @@
+#! /bin/sh
+
+if test "${POWERDNS_SYSLOG_SERVER}"
+	then
+		exec /sbin/syslogd -n -R ${POWERDNS_SYSLOG_SERVER}
+	else
+		exec /sbin/syslogd -n -O -
+	fi

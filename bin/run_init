@@ -1,0 +1,14 @@
+#! /bin/sh
+# (c) Copyright 2019-2022, James Stevens ... see LICENSE for details
+# Alternative license arrangements possible, contact me for more information
+
+export PDNS_API_KEY="$(dd if=/dev/urandom bs=1 count=50 2>/dev/null | base64 | tr -d $'\n +=./')"
+if ! test "${PDNS_LOG_LEVEL}"; then export PDNS_LOG_LEVEL=5; fi
+if ! test "${PDNS_ALSO_NOTIFY}"; then export PDNS_ALSO_NOTIFY=""; fi
+
+for file in /usr/local/etc/*.tmpl
+do
+	/usr/local/bin/envsub < ${file} > /run/$(basename ${file} .tmpl).conf
+done
+
+exec /sbin/init

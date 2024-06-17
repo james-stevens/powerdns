@@ -1,0 +1,3 @@
+::respawn:/usr/local/bin/start_syslogd
+::respawn:/usr/local/bin/start_pdns
+::respawn:/usr/local/bin/start_nginx
