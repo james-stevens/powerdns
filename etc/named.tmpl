@@ -1,0 +1,48 @@
+options {
+	directory "/zones";
+	version "this page intentionally left blank";
+	recursion no;
+
+	notify explicit;
+	also-notify { {{BIND_ALSO_NOTIFY}}; };
+
+	statistics-file "/var/stats";
+	zone-statistics yes;
+	allow-transfer { any; };
+	transfer-source 127.0.0.1;
+	query-source 127.0.0.1;
+	allow-update { none; };
+	allow-notify { any; };
+
+	allow-update-forwarding { key tsig-update-forward.; };
+
+	request-ixfr no;
+	ixfr-from-differences yes;
+
+	max-journal-size 3m;
+
+	max-refresh-time 900;
+	max-retry-time 60;
+	transfers-in 100;
+	transfers-per-ns 100;
+
+	catalog-zones { zone "{{PDNS_CATALOG_ZONE}}" default-masters { 127.0.0.2 ; }; };
+};
+
+logging {
+	channel default_syslog { syslog local3; severity warning; };
+	category default { default_syslog; };
+};
+
+
+key "tsig-update-forward." {
+	algorithm hmac-sha512;
+	secret "{{BIND_TSIG_UPDATE_KEY}}";
+};
+
+
+key "rndc-key" { algorithm hmac-sha256; secret "{{BIND_RNDC_KEY}}"; };
+controls { inet * port 953 allow { any; } keys { "rndc-key"; }; };
+
+
+zone "{{PDNS_CATALOG_ZONE}}" { type slave; file "/zones/{{PDNS_CATALOG_ZONE}}"; masters { 127.0.0.2 ; }; };

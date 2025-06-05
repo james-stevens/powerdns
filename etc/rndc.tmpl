@@ -1,0 +1,10 @@
+key "rndc-key" {
+	algorithm hmac-sha256;
+	secret "{{BIND_RNDC_KEY}}";
+};
+
+options {
+	default-key "rndc-key";
+	default-server 127.0.0.1;
+	default-port 953;
+};

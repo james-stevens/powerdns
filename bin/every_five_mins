@@ -1,0 +1,5 @@
+#! /bin/sh
+
+{
+/usr/local/python/catalog.py -s 127.0.0.1:8081 -Y -c "${PDNS_CATALOG_ZONE}"
+}  2>&1 | logger -t "every_five_mins[$$]"

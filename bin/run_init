@@ -2,14 +2,38 @@
 # (c) Copyright 2019-2022, James Stevens ... see LICENSE for details
 # Alternative license arrangements possible, contact me for more information
 
+if test -z "${BIND_TSIG_UPDATE_KEY}"
+	then
+		export BIND_TSIG_UPDATE_KEY="$(dd if=/dev/urandom bs=1 count=50 2>/dev/null | base64 )"
+	fi
+
+if test -z "${BIND_RNDC_KEY}"
+	then
+		export BIND_RNDC_KEY="$(dd if=/dev/urandom bs=1 count=50 2>/dev/null | base64 )"
+	fi
+
 export PDNS_API_KEY="$(dd if=/dev/urandom bs=1 count=50 2>/dev/null | base64 | tr -d $'\n +=./')"
 if ! test "${PDNS_LOG_LEVEL}"; then export PDNS_LOG_LEVEL=5; fi
 if ! test "${PDNS_LOG_FACILITY}"; then export PDNS_LOG_FACILITY=6; fi
-if ! test "${PDNS_ALSO_NOTIFY}"; then export PDNS_ALSO_NOTIFY=""; fi
+if ! test "${PDNS_CATALOG_ZONE}"; then export PDNS_CATALOG_ZONE="lst.zz"; fi
+if ! test "${BIND_ALSO_NOTIFY}"; then export BIND_ALSO_NOTIFY="127.1.1.1"; fi
 
 for file in /usr/local/etc/*.tmpl
 do
 	/usr/local/bin/envsub < ${file} > /run/$(basename ${file} .tmpl).conf
 done
+
+mkdir -p /run/named/etc /run/named/var /run/named/zones /run/named/dev
+chown named: /run/named/var /run/named/zones
+chmod 755 /run/named/var /run/named/zones
+cp /run/named.conf /run/named/etc/named.conf
+
+{
+echo "::respawn:/usr/local/bin/start_syslogd"
+echo "::respawn:/usr/local/bin/start_pdns"
+echo "::respawn:/usr/local/bin/start_nginx"
+echo "::respawn:/usr/sbin/crond -f -l 9"
+echo "::respawn:/usr/sbin/named -f -u named -t /run/named/ -c /etc/named.conf"
+} > /run/inittab
 
 exec /sbin/init
