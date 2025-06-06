@@ -4,11 +4,10 @@ options {
 	recursion no;
 
 	notify explicit;
-	also-notify { {{BIND_ALSO_NOTIFY}}; };
+	also-notify { {{BIND_SECONDARY_SERVERS}}; };
+	allow-transfer { {{BIND_SECONDARY_SERVERS}}; 127.0.0.0/8; };
 
-	statistics-file "/var/stats";
-	zone-statistics yes;
-	allow-transfer { any; };
+	zone-statistics no;
 	transfer-source 127.0.0.1;
 	query-source 127.0.0.1;
 	allow-update { none; };

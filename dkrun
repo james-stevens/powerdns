@@ -1,8 +1,8 @@
 #! /bin/sh
 
 docker run -it --env-file=container.env \
-	-e PDNS_CATALOG_ZONE="lst.zz" \
 	-e MYSQL_PASSWORD="${POWERDNS_MYSQL_PASSWORD}" \
 	-p 127.0.0.1:53:53/udp -p 127.0.0.1:53:53 \
 	-p 192.168.1.145:80:80 \
+	-p 192.168.1.145:53:53/udp -p 192.168.1.145:53:53 \
 	$(cat list) $@

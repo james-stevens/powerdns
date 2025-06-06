@@ -128,6 +128,9 @@ def want_zone(zone):
     if zone["name"] in exclude_zones:
         return False
 
+    if zone["name"] == args.catalog:
+        return False
+
     if zone["kind"] == "Native" and args.include_native:
         return True
 
@@ -136,6 +139,7 @@ def want_zone(zone):
 
     return True
 
+all_zones = { z["name"]: True for z in zones }
 
 have_zones = {
     z["name"].lower(): hashname(z["name"])
@@ -143,9 +147,7 @@ have_zones = {
 }
 hash_have_zones = {have_zones[z]: z for z in have_zones}
 
-if args.catalog in have_zones:
-    del have_zones[args.catalog]
-else:
+if args.catalog not in all_zones:
     if not args.yes:
         print("= NEED: Catalog zone does not exist and `-Y` not specified")
         sys.exit(2)
@@ -153,7 +155,7 @@ else:
     ret = call_api(
         "zones", "POST", 201, {
             "name": args.catalog,
-            "kind": "Master",
+            "kind": "Producer",
             "nameservers": ["ns1." + args.catalog],
             "soa_edit_api": "EPOCH"
         })
