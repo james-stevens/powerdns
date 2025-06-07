@@ -769,12 +769,14 @@ function doEditMeta(isDel)
 				callApi(`zones/${ctx.zone}`, (data) => {
 					ctx.zoneDetails = data;
 					zoneMeta();
-					/*
 					if (is_catalog) { // I'm not certain this is necessary
-						if (old_value) callApi(`zones/${old_value}/notify`, ret => {}, { method: "PUT" });
-						if (metaValue) callApi(`zones/${data.catalog}/notify`, ret => {}, { method: "PUT" });
+						setTimeout(() => {
+							let oldv = old_value;
+							let newv = data.catalog;
+							if (oldv) callApi(`zones/${oldv}/notify`, ret => {}, { method: "PUT" });
+							if (newv) callApi(`zones/${newv}/notify`, ret => {}, { method: "PUT" });
+							},500);
 						}
-					*/
 					} );
 				};
 			}

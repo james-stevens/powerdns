@@ -11,6 +11,8 @@ options {
 	transfer-source 127.0.0.1;
 	query-source 127.0.0.1;
 
+	dnssec-validation no;
+
 	allow-update { none; };
 	allow-notify { 127.0.0.1; };
 
@@ -19,16 +21,17 @@ options {
 
 	max-journal-size 3m;
 
-	max-refresh-time 30;
-	max-retry-time 30;
-	transfers-in 100;
-	transfers-per-ns 100;
+	max-refresh-time 60;
+	max-retry-time 60;
+	transfers-in 20;
+	transfers-per-ns 20;
 
 	catalog-zones { zone "{{PDNS_CATALOG_ZONE}}" default-masters { 127.0.0.2 ; }; };
 };
 
+
 logging {
-	channel default_syslog { syslog local3; severity warning; };
+	channel default_syslog { syslog local3; severity info; };
 	category default { default_syslog; };
 };
 
