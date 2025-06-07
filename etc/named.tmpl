@@ -10,18 +10,17 @@ options {
 	zone-statistics no;
 	transfer-source 127.0.0.1;
 	query-source 127.0.0.1;
-	allow-update { none; };
-	allow-notify { any; };
 
-	allow-update-forwarding { key tsig-update-forward.; };
+	allow-update { none; };
+	allow-notify { 127.0.0.1; };
 
 	request-ixfr no;
 	ixfr-from-differences yes;
 
 	max-journal-size 3m;
 
-	max-refresh-time 900;
-	max-retry-time 60;
+	max-refresh-time 30;
+	max-retry-time 30;
 	transfers-in 100;
 	transfers-per-ns 100;
 
@@ -34,14 +33,14 @@ logging {
 };
 
 
-key "tsig-update-forward." {
-	algorithm hmac-sha512;
-	secret "{{BIND_TSIG_UPDATE_KEY}}";
-};
-
-
 key "rndc-key" { algorithm hmac-sha256; secret "{{BIND_RNDC_KEY}}"; };
 controls { inet * port 953 allow { any; } keys { "rndc-key"; }; };
 
 
-zone "{{PDNS_CATALOG_ZONE}}" { type slave; file "/zones/{{PDNS_CATALOG_ZONE}}"; masters { 127.0.0.2 ; }; };
+zone "{{PDNS_CATALOG_ZONE}}" {
+	max-refresh-time 10;
+	max-retry-time 10;
+	type slave;
+	file "/zones/{{PDNS_CATALOG_ZONE}}";
+	masters { 127.0.0.2 ; };
+};

@@ -15,9 +15,6 @@ RUN apk add nginx
 RUN ln -fns /run/nginx.conf /etc/nginx/nginx.conf
 RUN ln -fns /run/pdns.conf /etc/pdns/pdns.conf
 
-RUN apk add python3
-RUN apk add py3-dnspython py3-requests
-
 RUN apk add bind
 RUN ln -fns /run/rndc.conf /etc/bind/rndc.conf
 RUN rm /etc/bind/rndc.key
@@ -30,16 +27,11 @@ RUN ln -s /dev/shm /run/nginx
 RUN ln -fns /run/inittab /etc/inittab
 COPY htpasswd /etc/nginx/htpasswd
 RUN chown -R nginx: /etc/nginx/htpasswd
-COPY inittab /etc/inittab
 
 COPY htdocs /opt/htdocs/
 RUN chown -R nginx: /opt/htdocs
 
-COPY cron.root /var/spool/cron/crontabs/root
-
 COPY bin /usr/local/bin/
 COPY etc /usr/local/etc/
-COPY python /usr/local/python/
-RUN python3 -m compileall /usr/local/python/
 
 CMD [ "/usr/local/bin/run_init" ]

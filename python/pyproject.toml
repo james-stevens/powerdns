@@ -1,4 +1,0 @@
-[tool.ruff]
-extend-select = ["C4","SIM","TCH"]
-line-length = 119
-ignore = ["SIM105","F403"]

@@ -39,7 +39,6 @@ cp /run/named.conf /run/named/etc/named.conf
 echo "::respawn:/usr/local/bin/start_syslogd"
 echo "::respawn:/usr/local/bin/start_pdns"
 echo "::respawn:/usr/local/bin/start_nginx"
-echo "::respawn:/usr/sbin/crond -f -l 9"
 echo "::respawn:/usr/sbin/named -f -u named -t /run/named/ -c /etc/named.conf"
 } > /run/inittab
 
