@@ -5,7 +5,7 @@ docker run -it \
 	-e MYSQL_USERNAME="${PDNS_SQL_USERNAME}" \
 	-e MYSQL_PASSWORD="${PDNS_SQL_PASSWORD}" \
 	-e MYSQL_CONNECT="${MYSQL_CONNECT}" \
-	-e DNS_SECONDARY_SERVERS="192.168.1.140" \
+	-e DNS_SECONDARY_SERVERS="192.168.1.140 192.168.1.141" \
 	-e PDNS_LOG_LEVEL="5" \
 	-v /opt/github/powerdns/htdocs:/opt/htdocs/ \
 	-p 127.0.0.1:53:53/udp -p 127.0.0.1:53:53 \
