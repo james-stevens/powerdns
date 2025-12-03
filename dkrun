@@ -1,7 +1,9 @@
 #! /bin/sh
 
 docker run -it --env-file=container.env \
-	-e MYSQL_PASSWORD="${POWERDNS_MYSQL_PASSWORD}" \
+	-e SYSLOG_STDOUT=Y \
+	-v /opt/data/powerdns:/opt/data \
+	-e X_MYSQL_PASSWORD="${POWERDNS_MYSQL_PASSWORD}" \
 	-p 127.0.0.1:53:53/udp -p 127.0.0.1:53:53 \
 	-p 192.168.1.145:80:80 \
 	-p 192.168.1.145:53:53/udp -p 192.168.1.145:53:53 \

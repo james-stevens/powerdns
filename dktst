@@ -1,0 +1,3 @@
+#! /bin/sh
+
+./dkrun /bin/sh

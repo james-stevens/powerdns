@@ -30,6 +30,24 @@ do
 	/usr/local/bin/envsub < ${file} > /run/$(basename ${file} .tmpl).conf
 done
 
+if test "${MYSQL_CONNECT}" -a "${MYSQL_DATABASE}" -a "${MYSQL_PASSWORD}" -a "${MYSQL_USERNAME}"
+    then
+        cat /run/pdns-mysql.conf >> /run/pdns.conf
+    else
+        mkdir -p /opt/data/pdns
+        db="/opt/data/pdns/pdns.db"
+        {
+        echo "launch=gsqlite3"
+        echo "gsqlite3-dnssec=yes"
+        echo "gsqlite3-database=${db}"
+        } >> /run/pdns.conf
+
+    	if ! test -f ${db}
+    		then
+				sqlite3 ${db} < /usr/local/etc/sqlite3.sql
+			fi
+    fi
+
 mkdir -p /run/named/etc /run/named/var /run/named/zones /run/named/dev
 chown named: /run/named/var /run/named/zones
 chmod 755 /run/named/var /run/named/zones

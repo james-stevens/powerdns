@@ -1,16 +1,16 @@
 # (c) Copyright 2019-2020, James Stevens ... see LICENSE for details
 # Alternative license arrangements are possible, contact me for more information
 
-FROM alpine:3.18
+FROM alpine:3.22
 
 RUN apk update
 RUN apk upgrade
 
-RUN rmdir /tmp /run
+RUN rm -rf /tmp /run
 RUN ln -s /dev/shm /tmp
 RUN ln -s /dev/shm /run
 
-RUN apk add pdns pdns-backend-mysql
+RUN apk add pdns pdns-backend-mysql pdns-backend-sqlite3
 RUN apk add nginx
 RUN ln -fns /run/nginx.conf /etc/nginx/nginx.conf
 RUN ln -fns /run/pdns.conf /etc/pdns/pdns.conf
