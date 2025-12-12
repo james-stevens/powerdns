@@ -6,6 +6,10 @@ For this to work you need to define all the zones you want `bind` to pick up in 
 This can either be a PowerDNS Provider Zone, or a standard RFC Catalog Zone. The default name
 `bind` will look for is `lst.zz`. You can change this with the env-var `PDNS_CATALOG_ZONE`.
 
+If you create a Provider Zone called `lst.zz`, then to put zones in this catalog, go into the zone
+you want to add, go into its Meta Data nd in the item `CATALOG` add the value `lst.zz`. As soon as you do this
+`bind` should pick up the zone and you should be able to 
+
 Port `53` will point to `bind`, but port `5353` can be used to get direct DNS access
 to PowerDNS. Port `80` will be the Web Admin UI, password protected using the password
 file `htpasswd`, default admin & admin.
@@ -47,7 +51,7 @@ with the env-var `SYSLOG_SERVER`.
 
 # Env Vars
 
-The follow env-vars are also supported
+The follow env-vars are also supported / required
 
 | env-var | Use | default
 |---------|-----|--------|
@@ -55,7 +59,11 @@ The follow env-vars are also supported
 | PDNS_LOG_FACILITY | PowerDNS syslog facility | `6`
 | PDNS_API_KEY | PowerDNS API Key | If one is not specified a random key will be generated on each run
 | PDNS_CATALOG_ZONE | Name of the catalog zone that lists zones you want bind to convert too IXFR | `lst.zz`
+| BIND_SECONDARY_SERVERS | Semi-Colon separated list of secondary name server IP addresses | No default, mandatory
+| BIND_RNDC_KEY | Key for remote control of bind | No default, optional
 
 NOTE: You shouldn't need to specify a PowerDNS API key. You can access
 the PDNS/API through `nginx` and the user level authentication it imposes. 
 This is normally better than using a shared key.
+
+If you have no secondary name servers, or they are just not set up yet, set `127.1.1.1` as the `BIND_SECONDARY_SERVERS`
