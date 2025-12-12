@@ -1,0 +1,16 @@
+#! /bin/sh
+
+for me in $(cat list)
+do
+	id=$(docker image ls | awk '{ if($1=="'"${me}"'") print $3 }')
+	ver="$(cat build.txt)"
+
+	docker tag ${id} jamesstevens/${me}
+	docker push jamesstevens/${me}
+
+	docker tag ${id} jamesstevens/${me}:${ver}
+	docker push jamesstevens/${me}:${ver}
+
+	git tag "${ver}"
+	git push origin --tags
+done
