@@ -1,7 +1,7 @@
 # powerdns
 A complete container to run PowerDNS Auth with my Admin WebUI using nginx
 
-It also runs a copy of `bind` to convert PowerDNS's AXFR to the more stdnard IXFR.
+It also runs a copy of `bind` to convert PowerDNS's AXFR to the more standard IXFR.
 For this to work you need to define all the zones you want `bind` to pick up in a catalog zone.
 This can either be a PowerDNS Provider Zone, or a standard RFC Catalog Zone. The default name
 `bind` will look for is `lst.zz`. You can change this with the env-var `PDNS_CATALOG_ZONE`.
@@ -22,7 +22,7 @@ To uee a MySQL backend you will need to define the follow env-vars
 		MYSQL_PASSWORD
 		MYSQL_USERNAME
 
-`MYSQL_CONNECT` = <IP>:<port> or unix socket to connect to MySQL.
+`MYSQL_CONNECT` = [IP]:[port] or unix socket to connect to MySQL.
 
 With a MySQL backend it will be your responsbility to create the database and
 create a login that has permission to access the database. This can not be done automatically as

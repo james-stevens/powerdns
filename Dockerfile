@@ -34,4 +34,5 @@ RUN chown -R nginx: /opt/htdocs
 COPY bin /usr/local/bin/
 COPY etc /usr/local/etc/
 
+COPY build.txt /usr/local/etc/build.txt
 CMD [ "/usr/local/bin/run_init" ]

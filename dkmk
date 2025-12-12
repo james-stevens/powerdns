@@ -2,4 +2,5 @@
 # (c) Copyright 2019-2020, James Stevens ... see LICENSE for details
 # Alternative license arrangements are possible, contact me for more information
 
+date +%Y%m%d.%H%M > build.txt
 docker image build $* -t $(cat list) .
