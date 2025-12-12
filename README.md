@@ -22,24 +22,24 @@ To uee a MySQL backend you will need to define the follow env-vars
 		MYSQL_PASSWORD
 		MYSQL_USERNAME
 
-`MYSQL_CONNECT` = [IP]:[port] or unix socket to connect to MySQL.
+`MYSQL_CONNECT` = `[IP]:[port]` or path to unix socket, to connect to MySQL.
 
 With a MySQL backend it will be your responsbility to create the database and
 create a login that has permission to access the database. This can not be done automatically as
 it requires admin access to your database server.
 
 If you want to use Sqlite3, you will need to map some disk space into `/opt/data`
-in side the container. It will then create a sub-directory `pdns` and automatically 
+inside the container. It will then create a sub-directory `pdns` and automatically 
 create the correct database. There are no env-vars required or supported when using Sqlite3.
 
 MySQL will be faster for a large installation and means you can update the DNS
-data directly via the MySQL API, but Sqlite3 require no external server and creates
+data directly via the MySQL API, but Sqlite3 requires no external server and creates
 the database automatically, but probably won't scale quite as much - tho def fine
 for small installations.
 
 # Syslog
 
-By default it will syslog to `/opt/data/logs`, if you are running it under `systemd`
+By default it will syslog to `{{DATA}}/logs`, if you are running it under `systemd`
 you may want it to log to stdout, if so set the env-var `SYSLOG_STDOUT` to `Y`.
 
 If you are using an external syslog server (listening on port 514), you can specify it's IP Address
@@ -54,9 +54,8 @@ The follow env-vars are also supported
 | PDNS_LOG_LEVEL | PowerDNS logging level | `5`
 | PDNS_LOG_FACILITY | PowerDNS syslog facility | `6`
 | PDNS_API_KEY | PowerDNS API Key | If one is not specified a random key will be generated on each run
-| PDNS_CATALOG_ZONE | List of zones you want bind to convert too IXFR | `lst.zz`
+| PDNS_CATALOG_ZONE | Name of the catalog zone that lists zones you want bind to convert too IXFR | `lst.zz`
 
 NOTE: You shouldn't need to specify a PowerDNS API key. You can access
 the PDNS/API through `nginx` and the user level authentication it imposes. 
-This is far better than using a shared key.
-
+This is normally better than using a shared key.
