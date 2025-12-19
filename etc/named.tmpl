@@ -4,8 +4,7 @@ options {
 	recursion no;
 
 	notify explicit;
-	also-notify { {{BIND_SECONDARY_SERVERS}}; };
-	allow-transfer { {{BIND_SECONDARY_SERVERS}}; 127.0.0.0/8; };
+	include "/etc/secondary_inc.conf";
 
 	zone-statistics no;
 	transfer-source 127.0.0.1;

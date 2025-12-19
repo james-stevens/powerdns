@@ -17,13 +17,11 @@ if ! test "${PDNS_LOG_LEVEL}"; then export PDNS_LOG_LEVEL=5; fi
 if ! test "${PDNS_LOG_FACILITY}"; then export PDNS_LOG_FACILITY=6; fi
 if ! test "${PDNS_CATALOG_ZONE}"; then export PDNS_CATALOG_ZONE="lst.zz"; fi
 
+export BIND_SECONDARY_SERVERS=""
 if test "${DNS_SECONDARY_SERVERS}"
 	then
 		export BIND_SECONDARY_SERVERS=$(echo "${DNS_SECONDARY_SERVERS}" | awk '{ for(l=1;l<=NF;l++) x = x _ ";" _ $l; print(substr(x,2)) }')
-	else
-		export BIND_SECONDARY_SERVERS="127.1.1.1"
 	fi
-
 
 for file in /usr/local/etc/*.tmpl
 do
@@ -53,11 +51,13 @@ chown named: /run/named/var /run/named/zones
 chmod 755 /run/named/var /run/named/zones
 cp /run/named.conf /run/named/etc/named.conf
 
-{
-echo "::respawn:/usr/local/bin/start_syslogd"
-echo "::respawn:/usr/local/bin/start_pdns"
-echo "::respawn:/usr/local/bin/start_nginx"
-echo "::respawn:/usr/sbin/named -f -u named -t /run/named/ -c /etc/named.conf"
-} > /run/inittab
+src="blank.conf"
+if test "${BIND_SECONDARY_SERVERS}"; then src="secondary_inc.conf"; fi
+cp /run/${src} /run/named/etc/secondary_inc.conf
 
+if ! named-checkconf -t /run/named -c /etc/named.conf
+	then
+		echo "ERROR: named-checkconf failed"
+		exit 1
+	fi
 exec /sbin/init
