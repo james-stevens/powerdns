@@ -6,6 +6,7 @@ security-poll-suffix=
 
 loglevel={{PDNS_LOG_LEVEL}}
 logging-facility={{PDNS_LOG_FACILITY}}
+disable-syslog=no
 
 local-address=127.0.0.2:53,0.0.0.0:5353
 
@@ -18,7 +19,7 @@ allow-dnsupdate-from=127.0.0.0/8,192.168.0.0/16
 cache-ttl=5
 xfr-cycle-interval=3
 
-allow-axfr-ips=127.0.0.0/8
+allow-axfr-ips={{PDNS_AXFR_PERMITTED}}
 
 webserver=yes
 webserver-address=127.0.0.1

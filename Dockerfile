@@ -1,7 +1,7 @@
 # (c) Copyright 2019-2020, James Stevens ... see LICENSE for details
 # Alternative license arrangements are possible, contact me for more information
 
-FROM alpine:3.22
+FROM alpine:3.24
 
 RUN apk update
 RUN apk upgrade
@@ -24,13 +24,13 @@ RUN ln -s /dev/shm /var/lib/nginx/tmp
 RUN ln -s /dev/shm /var/log/nginx
 RUN ln -s /dev/shm /run/nginx
 
-RUN ln -fns /run/inittab /etc/inittab
 COPY htpasswd /etc/nginx/htpasswd
 RUN chown -R nginx: /etc/nginx/htpasswd
 
 COPY htdocs /opt/htdocs/
 RUN chown -R nginx: /opt/htdocs
 
+COPY inittab /etc/inittab
 COPY bin /usr/local/bin/
 COPY etc /usr/local/etc/
 
